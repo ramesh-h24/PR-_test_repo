@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    git branch: 'main', url: ''
+                    git branch: 'main', url: 'https://github.com/ramesh-h24/PR-_test_repo.git'
                 }
             }
         }
