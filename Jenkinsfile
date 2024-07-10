@@ -1,45 +1,53 @@
 pipeline {
-    agent any  
+    agent any
+
     stages {
-        stage('Checkout') {
+        stage('Pull Request Handling') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/ramesh-h24/PR-_test_repo.git'
-                }
-            }
-        }
-        stage('Check Merge Conflicts') {
-            steps {
-                script {
-                    def featureBranch = "feature"  
-                    def mainBranch = "main"
-                    sh "git fetch origin ${featureBranch}:${featureBranch}"
-                    def result = sh script: "git merge --no-commit --no-ff origin/${featureBranch}", returnStatus: true
-                    if (result != 0) {
-                        error "Merge conflicts detected. Aborting pipeline."
+                    // Extract branch names from the webhook payload or parameters
+                    def featureBranch = feature
+                    def integrationBranch = "integration"
+                    
+                    // Checkout the feature branch
+                    checkout([$class: 'GitSCM', branches: [[name: featureBranch]], userRemoteConfigs: [[url: 'https://github.com/ramesh-h24/weather_app.git']]])
+
+                    // Merge feature branch into integration branch
+                    def mergeResult = sh(script: "git merge ${featureBranch} --no-ff", returnStatus: true)
+
+                    if (mergeResult == 0) {
+                        // Merge successful, push integration branch to another repo
+                        sh "git push https://github.com/ramesh-h24/PR-_test_repo.git ${integrationBranch}"
                     } else {
-                        echo "No merge conflicts. Proceeding with merge."
+                        error "Merge conflict detected. Pipeline aborted."
                     }
                 }
             }
         }
-        stage('Merge to Main') {
+
+        stage('Gated Tests with Timeout') {
             steps {
-                script {
-                    sh "git commit -m 'Merging ${featureBranch} into ${mainBranch}'"
-                    withCredentials([usernamePassword(credentialsId: 'git_repo', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/weather_app.git ${mainBranch}"
-                    }
+                timeout(time: 10, unit: 'SECONDS') {
+                    // Perform gated tests, e.g., integration tests, unit tests
+                    // Example: sh 'mvn test'
+                    echo 'Running gated tests...'
+                    sh 'sleep 15' // Placeholder for actual tests
                 }
             }
         }
     }
+
     post {
         success {
-            build job: 'wether_ap'
-        }  
+            // Success handling after gated tests pass
+            echo 'Gated tests passed successfully.'
+            // Additional steps if needed
+        }
+
         failure {
-            echo 'Pipeline failed.'
+            // Failure handling if tests fail or timeout
+            echo 'Gated tests failed or timed out.'
+            // Additional steps if needed
         }
     }
 }
