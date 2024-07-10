@@ -11,7 +11,7 @@ pipeline {
         stage('Check Merge Conflicts') {
             steps {
                 script {
-                    def featureBranch = "feature-1"  
+                    def featureBranch = "feature"  
                     def mainBranch = "main"
                     sh "git fetch origin ${featureBranch}:${featureBranch}"
                     def result = sh script: "git merge --no-commit --no-ff origin/${featureBranch}", returnStatus: true
