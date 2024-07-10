@@ -6,8 +6,8 @@ pipeline {
             steps {
                 script {
                     // Extract branch names from the webhook payload or parameters
-                    def featureBranch = feature
-                    def integrationBranch = "integration"
+                    def featureBranch = "feature"
+                    def integrationBranch = "main"
                     
                     // Checkout the feature branch
                     checkout([$class: 'GitSCM', branches: [[name: featureBranch]], userRemoteConfigs: [[url: 'https://github.com/ramesh-h24/weather_app.git']]])
