@@ -13,7 +13,7 @@ pipeline {
                     checkout([$class: 'GitSCM', branches: [[name: featureBranch]], userRemoteConfigs: [[url: 'https://github.com/ramesh-h24/weather_app.git']]])
 
                     // Merge feature branch into integration branch
-                    def mergeResult = sh(script: "git merge ${featureBranch} --no-ff", returnStatus: true)
+                    def mergeResult = sh(script: "git merge --allow-unrelated-histories ${featureBranch} --no-ff", returnStatus: true)
 
                     if (mergeResult == 0) {
                         // Merge successful, push integration branch to another repo
