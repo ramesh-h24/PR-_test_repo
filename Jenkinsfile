@@ -8,8 +8,8 @@ pipeline {
                     def featureBranch = 'feature'  // Replace with your actual feature branch name
                     def mainBranch = 'main'  // Replace with your main branch name
                     
-                    // Checkout main branch
-                    checkout([$class: 'GitSCM', branches: [[name: "refs/remotes/origin/${mainBranch}"]], userRemoteConfigs: [[url: 'https://github.com/ramesh-h24/weather_app.git']]])
+                    // // Checkout main branch
+                    // checkout([$class: 'GitSCM', branches: [[name: "refs/remotes/origin/${mainBranch}"]], userRemoteConfigs: [[url: 'https://github.com/ramesh-h24/weather_app.git']]])
 
                     // Checkout feature branch
                     checkout([$class: 'GitSCM', branches: [[name: "refs/remotes/origin/${featureBranch}"]], userRemoteConfigs: [[url: 'https://github.com/ramesh-h24/weather_app.git']]])
