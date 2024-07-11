@@ -1,24 +1,56 @@
-pipeline {    
-    agent any 
-    tools {
-      maven 'maven3'
-    }
-    stages {   
-        stage('Compile') {
+pipeline {
+    agent any
+
+    stages {
+        stage('Init') {
             steps {
-                sh 'mvn compile'
+                sh "env"
+                echo 'Initializing..'
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             }
         }
-        
         stage('Test') {
             steps {
-                sh 'mvn test'
+                script {
+                    // Print current branch name
+                    echo "Current Branch: ${git.branch}"
+                    
+                    // Print last commit hash
+                    echo "Last Commit Hash: ${git.commit}"
+                    
+                    // Print repository URL
+                    echo "Repository URL: ${git.url}"
+                    
+                    // Print the author of the last commit
+                    echo "Last Commit Author: ${git.author}"
+                    
+                    // Print the commit message of the last commit
+                    echo "Last Commit Message: ${git.message}"
+                    
+                    // Print changeset details (files changed, commit message, etc.)
+                    def changeLog = git.changelog
+                    echo "ChangeLog: ${changeLog}"
+                    echo 'Testing..'
+                    echo 'Running pytest..'
+                }
             }
         }
-        
         stage('Build') {
             steps {
-                sh 'mvn package'
+                echo 'Building..'
+                echo 'Running docker build -t sntshk/cotu .'
+            }
+        }
+        stage('Publish') {
+            steps {
+                echo 'Publishing..'
+                echo 'Running docker push..'
+            }
+        }
+        stage('Cleanup') {
+            steps {
+                echo 'Cleaning..'
+                echo 'Running docker rmi..'
             }
         }
     }
