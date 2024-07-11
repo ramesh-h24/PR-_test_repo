@@ -42,10 +42,8 @@ pipeline {
             echo 'Gated tests passed successfully.'
             // Additional steps if needed
         }
-
         failure {
             echo 'Gated tests failed or timed out.'
-            // Additional steps if needed
         }
     }
 }
