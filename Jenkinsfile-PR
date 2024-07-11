@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage('Pull Request Handling') {
             steps {
@@ -25,7 +24,6 @@ pipeline {
                 }
             }
         }
-
         stage('Gated Tests with Timeout') {
             steps {
                 timeout(time: 10, unit: 'SECONDS') {
@@ -36,7 +34,6 @@ pipeline {
             }
         }
     }
-
     post {
         success {
             echo 'Gated tests passed successfully.'
