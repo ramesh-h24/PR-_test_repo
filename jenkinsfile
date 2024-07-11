@@ -22,14 +22,14 @@ pipeline {
                     echo "Repository URL: $GIT_URL}"
                     
                     // Print the author of the last commit
-                    echo "Last Commit Author: ${git.author}"
+                    echo "Last Commit Author: ${GIT_AUTHOR_NAME}"
                     
                     // Print the commit message of the last commit
-                    echo "Last Commit Message: ${git.message}"
+                    //echo "Last Commit Message: ${git.message}"
                     
                     // Print changeset details (files changed, commit message, etc.)
-                    def changeLog = git.changelog
-                    echo "ChangeLog: ${changeLog}"
+                    //def changeLog = git.changelog
+                    //echo "ChangeLog: ${changeLog}"
                     echo 'Testing..'
                     echo 'Running pytest..'
                 }
