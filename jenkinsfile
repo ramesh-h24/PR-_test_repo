@@ -13,13 +13,13 @@ pipeline {
             steps {
                 script {
                     // Print current branch name
-                    echo "Current Branch: ${git.branch}"
+                    echo "Current Branch: ${GIT_BRANCH}"
                     
                     // Print last commit hash
-                    echo "Last Commit Hash: ${git.commit}"
+                    echo "Last Commit Hash: ${GIT_COMMIT}"
                     
                     // Print repository URL
-                    echo "Repository URL: ${git.url}"
+                    echo "Repository URL: $GIT_URL}"
                     
                     // Print the author of the last commit
                     echo "Last Commit Author: ${git.author}"
