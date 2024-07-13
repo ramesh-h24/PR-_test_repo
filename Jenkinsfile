@@ -15,7 +15,7 @@ pipeline {
                     // Print current branch name
                     echo "Current Branch: ${GIT_BRANCH}"
                     
-                    // Print last commit hash
+                    // Print last commit hashhdgch
                     echo "Last Commit Hash: ${GIT_COMMIT}"
                     
                     // Print repository URL
